@@ -19,15 +19,15 @@ router
     ],
     validationResultExpress,
     register
-  )
-  .post(
+  );
+  router.post(
     "/login",
     [
       body("email", "Formato de email incorecto")
         .trim()
         .isEmail()
         .normalizeEmail(),
-      body("password", "Minimo 6 caracteres")
+      body("password", "Formato de password incorecto")
         .trim()
         .isLength({ min: 6 }),
     ],

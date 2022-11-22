@@ -8,7 +8,7 @@ app.use(cors())//por quien quiere ser consumida
 
 app.use(express.json());
 
-app.use("/api/v1", authRouter);
+app.use("/api/v1/auth", authRouter);
 
 app.use((req, res, next) => {
   res.status(400).json({
