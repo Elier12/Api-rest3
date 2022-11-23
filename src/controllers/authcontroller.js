@@ -1,5 +1,6 @@
 import { User } from "../models/user.model.js"; //llamar al modelo para query tine metodos
-import jwt from "jsonwebtoken";
+
+import { generateToken } from "../utils/generateToken.js";
 
 export const register = async (req, res) => {
   const { email, password } = req.body;
@@ -35,13 +36,21 @@ export const login = async (req, res) => {
       return res.status(403).json({ error: `Credentiales invalid` });
 
     //Generar jwt token
-    const token = jwt.sign({ uid : user.id }, process.env.JWT_SECRET);
-    
+    const {token,expiresIn} = generateToken(user.id)
 
-    return res.json({token});
+    return res.json({token,expiresIn});
 
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: `Error del servidor` });
   }
 };
+
+export const infoUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.uid).lean()//onjeto simpel
+    return res.json({ email: user.email})
+  } catch (error) {
+    return res.status(500).json({ error: `Error del servidor` });
+  }
+}

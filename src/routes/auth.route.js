@@ -1,7 +1,8 @@
 import { Router } from "express";
-import { login, register } from "../controllers/authcontroller.js";
+import { login, register,infoUser } from "../controllers/authcontroller.js";
 import { body } from "express-validator";
 import { validationResultExpress } from "../milddewares/validationResultExpress.js";
+import{requireToken} from "../milddewares/requireAuth.js"
 
 const router = Router(); //manejador de las rutas interpretar las peticiones
 
@@ -19,8 +20,8 @@ router
     ],
     validationResultExpress,
     register
-  );
-  router.post(
+  )
+.post(
     "/login",
     [
       body("email", "Formato de email incorecto")
@@ -33,6 +34,7 @@ router
     ],
     validationResultExpress,
     login
-  );
+  )
+.get("/protected",requireToken,infoUser)
 
 export default router;
