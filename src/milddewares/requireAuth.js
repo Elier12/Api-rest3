@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 export const requireToken =(req,res,next) =>{
     try {
         let token = req.headers?.authorization
-        if (!token) throw new Error('No existe el token en el header usa Bearer');
+        if (!token) throw new Error('No existe el token');
         token = token.split(' ')[1]
         const {uid} =jwt.verify(token,process.env.JWT_SECRET)
 
@@ -11,24 +11,22 @@ export const requireToken =(req,res,next) =>{
 
         next()
     } catch (error) {
-       console.log(error); 
+       console.log(error.message); 
 
        const TokenVerificationError ={
-        ["invalid signature"]:"La Firma del JWT no es valida",
-        ["expired token"]:"La Firma del JWT ha expirado",
-        ["invalid token"]:"La Firma del JWT no es válida",
-        ["user not found"]:"La Firma del JWT no existe",
-        ["jwt expired"]:"JWT expidaro",
-        ["No Bearer"] : "Utiliza formato Bearer"
+        "invalid signature":"La Firma del JWT no es valida",
+        "expired token":"La Firma del JWT ha expirado",
+        "invalid token":"La Firma del JWT no es válida",
+        "user not found":"La Firma del JWT no existe",
+        "jwt expired":"JWT expidaro",
+        "No Bearer" : "Utiliza formato Bearer",
+        "jwt malformed":"JWT formato no valido"
        }
         return res
             .status(401)
             .send({error:TokenVerificationError[error.message]})
-    
-
 
        }
-       return res.status(401).json({error: error.message})
+    //    return res.status(401).json({error: error.message})
        
     }
-}
