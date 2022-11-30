@@ -1,5 +1,6 @@
 import express from "express";
 import authRouter from "./routes/auth.route.js";
+import linkRouter from "./routes/link.router.js"
 import cors from "cors";
 import cookieParser from "cookie-parser";
 const app = express();
@@ -9,6 +10,7 @@ app.use(cors())//por quien quiere ser consumida
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/links", linkRouter);
 
 app.use(express.static("src/public"));
 
